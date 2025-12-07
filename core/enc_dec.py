@@ -17,40 +17,52 @@ def derive_key_iv(password: str, salt: bytes):
     return key_iv[:32], key_iv[32:]
 
 def encrypt(filepath, outpath, password):
-    with open(filepath, 'rb') as f:
-        data = f.read()
-
+    CHUNK_SIZE = 64 * 1024
     salt = os.urandom(16)
     key, iv = derive_key_iv(password, salt)
-    
-    padder = padding.PKCS7(128).padder()
-    padded_data = padder.update(data) + padder.finalize()
 
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
-    encrypted = encryptor.update(padded_data) + encryptor.finalize()
+    padder = padding.PKCS7(128).padder()
+    with open(filepath, 'rb') as fin, open(outpath, 'wb') as fout:
+        fout.write(salt)
 
-    with open(outpath, 'wb') as f:
-        f.write(salt + encrypted)
+        while True:
+            chunk = fin.read(CHUNK_SIZE)
+            if not chunk:
+                break
+            if len(chunk) < CHUNK_SIZE:
+                chunk = padder.update(chunk) + padder.finalize()
+            else:
+                chunk = padder.update(chunk)
+            encrypted_chunk = encryptor.update(chunk)
+            fout.write(encrypted_chunk)
+
+        fout.write(encryptor.finalize())
 
 def decrypt(filepath, outpath, password):
-    with open(filepath, 'rb') as f:
-        data = f.read()
+    CHUNK_SIZE = 64 * 1024
+    with open(filepath, 'rb') as fin:
+        salt = fin.read(16)
+        key, iv = derive_key_iv(password, salt)
 
-    salt = data[:16]
-    encrypted = data[16:]
+        cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+        decryptor = cipher.decryptor()
+        unpadder = padding.PKCS7(128).unpadder()
 
-    key, iv = derive_key_iv(password, salt)
+        with open(outpath, 'wb') as fout:
+            while True:
+                chunk = fin.read(CHUNK_SIZE)
+                if not chunk:
+                    break
+                decrypted_chunk = decryptor.update(chunk)
+                if len(chunk) < CHUNK_SIZE:
+                    decrypted_chunk = unpadder.update(decrypted_chunk) + unpadder.finalize()
+                else:
+                    decrypted_chunk = unpadder.update(decrypted_chunk)
+                fout.write(decrypted_chunk)
 
-    cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
-    decryptor = cipher.decryptor()
-    decrypted_padded = decryptor.update(encrypted) + decryptor.finalize()
-
-    unpadder = padding.PKCS7(128).unpadder()
-    decrypted = unpadder.update(decrypted_padded) + unpadder.finalize()
-
-    with open(outpath, 'wb') as f:
-        f.write(decrypted)
+            fout.write(decryptor.finalize())
 
 def add_history(username, filename, action):
     connection = get_connection()
