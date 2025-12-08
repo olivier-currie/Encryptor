@@ -7,25 +7,35 @@ class Welcome(ttk.Frame):
 
         container = ttk.Frame(self, padding=40)
         container.pack(expand=True)
+        style1 = ttk.Style()
+        style1.configure("Hover.TLabel", background="lightgrey")
 
         self.account_icon = PhotoImage(file="assets/account.png")
         self.login_icon = PhotoImage(file="assets/login.png")
 
         title = ttk.Label(container, text="Welcome to Encryptor",
-                          font=("Segoe UI", 22))
-        title.pack(pady=5)
+                          font=("Segoe UI", 32))
+        title.pack(pady=(0, 20))
 
         tagline = ttk.Label(container,
                             text="Securely encrypt and decrypt your files.",
-                            font=("Segoe UI", 12))
-        tagline.pack(pady=(0, 20))
+                            font=("Segoe UI", 18))
+        tagline.pack(pady=(0, 100))
         options_frame = ttk.Frame(container)
         options_frame.pack()
         acc_label = ttk.Label(options_frame, text="Create an account", image=self.account_icon, compound="top", cursor="hand2")
-        acc_label.pack(side="left", pady=20, padx=20)
+        acc_label.pack(side="left", pady=20, padx=40)
+        def on_enter(e, l):
+            l.config(style="Hover.TLabel")
+        def on_leave(e, l):
+            l.config(style="TLabel")
    
         acc_label.bind("<Button-1>", show_signup)
+        acc_label.bind("<Enter>", lambda e : on_enter(e, acc_label))
+        acc_label.bind("<Leave>", lambda e : on_leave(e, acc_label))
 
         log_label = ttk.Label(options_frame, text="Log in", image=self.login_icon, compound="top", cursor="hand2")
-        log_label.pack(side="right", pady=20, padx=20)
+        log_label.pack(side="right", pady=20, padx=40)
         log_label.bind("<Button-1>", show_login)
+        log_label.bind("<Enter>", lambda e : on_enter(e, log_label))
+        log_label.bind("<Leave>", lambda e : on_leave(e, log_label))

@@ -15,23 +15,31 @@ class Signup(ttk.Frame):
         container.pack(expand=True)
 
         title = ttk.Label(container, text="Sign Up",
-                          font=("Segoe UI", 22))
-        title.pack(pady=5)
+                          font=("Segoe UI", 30))
+        title.pack(pady=(0, 30))
 
+        def on_enter(e, l):
+            l.config(style="Hover.TLabel")
+        def on_leave(e, l):
+            l.config(style="TLabel")
+
+        style = ttk.Style()
+        style.configure("button.TButton", font=("Segoe UI", 8))
+        style.configure("Hover.TLabel", background="lightgray")
         user_label = ttk.Label(container, text="Username:", font=("Segoe UI", 12))
-        user_label.pack(pady=5)
+        user_label.pack(pady=10)
         username_entry = ttk.Entry(container, width=50)
         username_entry.pack()
         email_label = ttk.Label(container, text="E-Mail:", font=("Segoe UI", 12))
-        email_label.pack(pady=5)
+        email_label.pack(pady=10)
         email_entry = ttk.Entry(container, width=50)
         email_entry.pack()
         pass_label = ttk.Label(container, text="Password:", font=("Segoe UI", 12))
-        pass_label.pack(pady=5)
+        pass_label.pack(pady=10)
         password_entry = ttk.Entry(container, width=50, show="*")
         password_entry.pack()
         conf_label = ttk.Label(container, text="Confirm password:", font=("Segoe UI", 12))
-        conf_label.pack(pady=5)
+        conf_label.pack(pady=10)
         conf_entry = ttk.Entry(container, width=50, show="*")
         conf_entry.pack()
         show_var = BooleanVar(value=False)
@@ -43,12 +51,13 @@ class Signup(ttk.Frame):
                 password_entry.config(show="*")
                 conf_entry.config(show="*")
         show_checkbox = ttk.Checkbutton(container, text="Show password", variable=show_var, command=toggle_password)
-        show_checkbox.pack()
+        show_checkbox.pack(pady=10)
         link_label = ttk.Label(container, text="Already have an account? Log in here.", font=("Segoe UI", 8), cursor="hand2")
         link_label.bind("<Button-1>", show_login)
-        link_label.pack()
-        style = ttk.Style()
-        style.configure("button.TButton", font=("Segoe UI", 8))
+        link_label.bind("<Enter>", lambda e : on_enter(e, link_label))
+        link_label.bind("<Leave>", lambda e : on_leave(e, link_label))
+        link_label.pack(pady=10)
+
         def is_valid_email(email):
             pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
             return re.match(pattern, email) is not None
