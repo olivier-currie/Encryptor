@@ -63,25 +63,41 @@ class Dash(ttk.Frame):
         try:
             password = self.password_entry.get()
             if not password:
-                raise ValueError("Password cannot be empty")
+                messagebox.showerror("Password Error", "Password cannot be empty")
             encrypt(self.input_entry.get(), self.output_entry.get(), password)
             add_history(self.username, os.path.basename(self.input_entry.get()), "Encrypted")
-            messagebox.showinfo("Success! File encrypted")
+            messagebox.showinfo("Success!", "File encrypted")
             self.password_entry.delete(0, tk.END)
+        except FileNotFoundError:
+            messagebox.showerror("File Error", "File not found")
+        except IsADirectoryError:
+            messagebox.showerror("File Error", "File cannot be a directory")
+        except PermissionError:
+            messagebox.showerror("Permission Error", "Cannot read/write file")
+        except ValueError as e:
+            messagebox.showerror("Encryption Error", str(e))
         except Exception as e:
-            messagebox.showerror("Error: ", str(e))
+            messagebox.showerror("Unknown Error", str(e))
 
     def decrypt_action(self):
         try:
             password = self.password_entry.get()
             if not password:
-                raise ValueError("Password cannot be empty")
+                messagebox.showerror("Password Error", "Password cannot be empty")
             decrypt(self.input_entry.get(), self.output_entry.get(), password)
             add_history(self.username, os.path.basename(self.input_entry.get()), "Decrypted")
-            messagebox.showinfo("Success! File decrypted")
+            messagebox.showinfo("Success!", " File decrypted")
             self.password_entry.delete(0, tk.END)
+        except FileNotFoundError:
+            messagebox.showerror("File Error", "File not found")
+        except IsADirectoryError:
+            messagebox.showerror("File Error", "File cannot be a directory")
+        except PermissionError:
+            messagebox.showerror("Permission Error", "Cannot read/write file")
+        except ValueError as e:
+            messagebox.showerror("Encryption Error", str(e))
         except Exception as e:
-            messagebox.showerror("Error: ", str(e))
+            messagebox.showerror("Unknown Error", str(e))
 
     def select_input(self):
         path = filedialog.askopenfilename()

@@ -1,6 +1,7 @@
 from tkinter import ttk
 from tkinter import BooleanVar
 from core.auth import verify_password
+from tkinter import messagebox
 
 class Login(ttk.Frame):
     def __init__(self, parent, show_welcome, show_signup, show_dashboard):
@@ -35,8 +36,18 @@ class Login(ttk.Frame):
         link_label.pack()
         def onsubmit():
             u = username_entry.get().strip()
-            if verify_password(u, password_entry.get().strip()):
-                self.dashfunc(u)
+            if not u:
+                messagebox.showerror("Username Error", "Username cannot be empty")
+                return
+            try:
+                if verify_password(u, password_entry.get().strip()):
+                    self.dashfunc(u)
+                else:
+                    messagebox.showerror("Login Error", "Incorrect Password")
+            except TypeError as e:
+                messagebox.showerror("Login Error", "Incorrect Username")
+            except Exception as e:
+                messagebox.showerror("Login Error", str(e))
         style = ttk.Style()
         style.configure("button.TButton", font=("Segoe UI", 8))
         login_button = ttk.Button(container, text="Log In", style="button.TButton", command=onsubmit)
