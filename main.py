@@ -3,13 +3,11 @@ from db.database import init_db
 
 
 # need to add max file size
-# might need to create an about page
+# need to add warning about encryption password
+# need to implement 15 min time limit for verif code
 # need to credit icons8 for the icons
-# need to add account info page
+# need to add account info page / sidebar w/ date of creation, delete acc
 # add input/output file history
-# add hover property for bound labels
-# style ui
-# fix timestamp est
 
 
 if __name__ == "__main__":

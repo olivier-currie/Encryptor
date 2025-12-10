@@ -13,6 +13,17 @@ class History(ttk.Frame):
         style.configure("Navbar.TFrame", background="#2c3e50")
         style.configure("Hover.TLabel", background="#23313F")
         style.configure("Base.TLabel", background="#2c3e50")
+        style.configure("Basic.TLabel", background="#181818", foreground="white")
+        style.configure("Treeview",
+            background="#181818",
+            fieldbackground="#181818",
+            foreground="white"
+        )
+        style.configure("Treeview.Heading",
+            background="#181818",
+            foreground="white",
+            relief="flat"
+        )
         def on_enter(e, l):
             l.config(style="Hover.TLabel")
         def on_leave(e, l):
@@ -33,7 +44,7 @@ class History(ttk.Frame):
         dash_label.bind("<Button-1>", lambda e: show_dashboard(username))
         dash_label.bind("<Enter>", lambda e : on_enter(e, dash_label))
         dash_label.bind("<Leave>", lambda e : on_leave(e, dash_label))
-        title = ttk.Label(hframe, text=f"Encryption history for {username}", font=("Segoe UI", 18))
+        title = ttk.Label(hframe, text=f"Encryption history for {username}", font=("Segoe UI", 18), style="Basic.TLabel")
         title.pack(pady=(15,35))
         tree_frame = ttk.Frame(hframe, padding=(10,0,5,0))
         tree_frame.pack(fill="both", expand=True, padx=10, pady=10)
