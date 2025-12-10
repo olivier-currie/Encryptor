@@ -41,3 +41,6 @@ class Welcome(ttk.Frame):
         log_label.bind("<Button-1>", show_login)
         log_label.bind("<Enter>", lambda e : on_enter(e, log_label))
         log_label.bind("<Leave>", lambda e : on_leave(e, log_label))
+
+        credit_label = ttk.Label(container, text="Credit to icons8.com for all icons used.", font=("Segoe UI", 8), style="Base.TLabel")
+        credit_label.pack(pady=(150, 0))
