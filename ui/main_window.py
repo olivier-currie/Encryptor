@@ -5,6 +5,7 @@ from ui.signup import Signup
 from ui.email_verif import EmailVerif
 from ui.dashboard import Dash
 from ui.history import History
+from ui.account_info import AccountInfo
 
 class App:
     def __init__(self):
@@ -53,7 +54,8 @@ class App:
                 self.root,
                 username=username,
                 show_welcome=self.show_welcome,
-                show_history=self.show_history
+                show_history=self.show_history,
+                show_account_info=self.show_account_info
             )
         )
     
@@ -65,7 +67,8 @@ class App:
                 email=email,
                 password=password,
                 v_code = v_code,
-                show_dashboard=self.show_dashboard
+                show_dashboard=self.show_dashboard,
+                show_signup = self.show_signup
             )
         )
 
@@ -76,7 +79,19 @@ class App:
                 username=username,
                 entries=entries,
                 show_welcome=self.show_welcome,
-                show_dashboard=self.show_dashboard
+                show_dashboard=self.show_dashboard,
+                show_account_info=self.show_account_info
+            )
+        )
+    
+    def show_account_info(self, username):
+        self.switch_frame(
+            AccountInfo(
+                self.root,
+                username=username,
+                show_welcome=self.show_welcome,
+                show_dashboard=self.show_dashboard,
+                show_history=self.show_history
             )
         )
         

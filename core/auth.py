@@ -45,16 +45,19 @@ def verify_password(username, password_attempt):
 def get_stored_pw(username):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
-    row = cursor.fetchone()
-    if row:
-        return row[0]
-    return None
+    try:
+        cursor.execute("SELECT password FROM users WHERE username = ?", (username,))
+        row = cursor.fetchone()
+        if row is None:
+            return None
+        else:
+            return row[0]
+    finally:
+        connection.close()
 
 def create_user(username, email, password):
     connection = get_connection()
     cursor = connection.cursor()
-    
     password_hash = hash_password(password)
     
     try:
@@ -75,4 +78,40 @@ def send_email_verif(to_email, code):
     with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
         smtp.login("encrypteur@gmail.com", "xwmb afmh sjlg vqnp")
         smtp.send_message(message)
+
+def get_account_created(username):
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT timestamp FROM users WHERE username = ? ",(username,))
+        row = cursor.fetchone()
+        if row is None:
+            return None
+        else:
+            return row[0]
+    finally:
+        connection.close()
+
+def get_email(username):
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT email FROM users WHERE username = ? ",(username,))
+        row = cursor.fetchone()
+        if row is None:
+            return None
+        else:
+            return row[0]
+    finally:
+        connection.close()
+
+def delete_user(username):
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute("DELETE FROM users WHERE username = ? ",(username,))
+        connection.commit()
+    finally:
+        connection.close()
+    
 

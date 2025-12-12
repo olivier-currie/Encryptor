@@ -2,7 +2,7 @@ from tkinter import ttk
 from tkinter import PhotoImage
 
 class History(ttk.Frame):
-    def __init__(self, parent, username, entries, show_welcome, show_dashboard):
+    def __init__(self, parent, username, entries, show_welcome, show_dashboard, show_account_info):
         super().__init__(parent)
         hframe = ttk.Frame(self)
         hframe.pack(fill="both", expand=True)
@@ -30,8 +30,11 @@ class History(ttk.Frame):
             l.config(style="Base.TLabel")
         navbar = ttk.Frame(hframe, style="Navbar.TFrame", relief="raised", padding=(10, 15))
         navbar.pack(fill="x")
-        user_label = ttk.Label(navbar, text=f"{username}", image=self.user_icon, compound="left", foreground="white", style="Base.TLabel", font=("Segoe UI", 12))
+        user_label = ttk.Label(navbar, text=f"{username}", image=self.user_icon, compound="left", foreground="white", cursor="hand2", style="Base.TLabel", font=("Segoe UI", 12))
         user_label.pack(side="left")
+        user_label.bind("<Button-1>", lambda e : show_account_info(username))
+        user_label.bind("<Enter>", lambda e : on_enter(e, user_label))
+        user_label.bind("<Leave>", lambda e : on_leave(e, user_label))
 
         logout_label = ttk.Label(navbar, text="Log out", image=self.logout_icon, compound="top", foreground="white", cursor="hand2", style="Base.TLabel", font=("Segoe UI", 8))
         logout_label.pack(side="right")

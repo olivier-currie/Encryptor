@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 from core.enc_dec import encrypt, decrypt, add_history, get_history
 from tkinter import PhotoImage
 import os
@@ -9,7 +9,7 @@ from ui.error_handling import error_message
 
 
 class Dash(ttk.Frame):
-    def __init__(self, parent, username, show_welcome, show_history):
+    def __init__(self, parent, username, show_welcome, show_history, show_account_info):
         super().__init__(parent)
         self.username = username
         dashframe = ttk.Frame(self)
@@ -50,8 +50,11 @@ class Dash(ttk.Frame):
         container.pack(fill="both", expand=True)
         container.grid_rowconfigure(6, weight=1)
         container.grid_columnconfigure(1, weight=1)
-        user_label = ttk.Label(navbar, text=f"{self.username}", image=self.user_icon, compound="left", foreground="white", style="Base.TLabel", font=("Segoe UI", 12))
+        user_label = ttk.Label(navbar, text=f"{self.username}", image=self.user_icon, compound="left", foreground="white", cursor="hand2", style="Base.TLabel", font=("Segoe UI", 12))
         user_label.pack(side="left")
+        user_label.bind("<Button-1>", lambda e : show_account_info(username))
+        user_label.bind("<Enter>", lambda e : on_enter(e, user_label))
+        user_label.bind("<Leave>", lambda e : on_leave(e, user_label))
 
         logout_label = ttk.Label(navbar, text="Log out", image=self.logout_icon, compound="top", foreground="white", cursor="hand2", style="Base.TLabel", font=("Segoe UI", 8))
         logout_label.pack(side="right")
@@ -98,6 +101,7 @@ class Dash(ttk.Frame):
 
         decrypt_btn = ttk.Button(container, text="Decrypt", command=self.decrypt_action, style="Base.TButton")
         decrypt_btn.grid(row=5, column=2, pady=10)
+
 
     def encrypt_action(self):
         try:

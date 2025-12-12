@@ -3,7 +3,7 @@ from core.auth import create_user
 from ui.error_handling import error_message
 
 class EmailVerif(ttk.Frame):
-    def __init__(self, parent, username, email, password, v_code, show_dashboard):
+    def __init__(self, parent, username, email, password, v_code, show_dashboard, show_signup):
         super().__init__(parent)
 
         self.dashfunc = show_dashboard
@@ -39,8 +39,10 @@ class EmailVerif(ttk.Frame):
                 if create_user(username, email, password):
                     self.dashfunc(username)
                 else:
-                    error_message("Account Error", "Account cannot be created")
+                    error_message("Account Error", "Account already exists.")
                     return
 
         go_button = ttk.Button(container, text="Enter", style="Base.TButton", command=onclick)
         go_button.pack(padx=20, pady=10)
+        goback_button = ttk.Button(container, text="Go Back", style="Base.TButton", command=show_signup)
+        goback_button.pack(padx=20, pady=30)

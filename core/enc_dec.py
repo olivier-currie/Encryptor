@@ -72,10 +72,10 @@ def add_history(username, filename, action):
     connection.close()
 
 def get_history(username):
-    conn = get_connection()
-    cursor = conn.cursor()
+    connection = get_connection()
+    cursor = connection.cursor()
     cursor.execute(
         "SELECT filename, action, timestamp FROM history WHERE username = ? ORDER BY timestamp DESC",(username,))
     rows = cursor.fetchall()
-    conn.close()
+    connection.close()
     return rows

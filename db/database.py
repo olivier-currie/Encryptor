@@ -15,7 +15,8 @@ def init_db():
     CREATE TABLE IF NOT EXISTS users (
         username TEXT UNIQUE NOT NULL,
         email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        timestamp DATETIME DEFAULT (datetime('now', 'localtime'))
     )
     """)
 
@@ -24,7 +25,7 @@ def init_db():
         username TEXT NOT NULL,
         filename TEXT NOT NULL,
         action TEXT NOT NULL,
-        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
         FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
     )
     """)
