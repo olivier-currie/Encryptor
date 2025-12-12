@@ -23,7 +23,8 @@ def init_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS history (
         username TEXT NOT NULL,
-        filename TEXT NOT NULL,
+        inputfile TEXT NOT NULL,
+        outputfile TEXT NOT NULL,
         action TEXT NOT NULL,
         timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
         FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE

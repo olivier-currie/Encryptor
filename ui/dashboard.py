@@ -110,7 +110,7 @@ class Dash(ttk.Frame):
                 error_message("Password Error", "Password cannot be empty.")
                 return
             encrypt(self.input_entry.get(), self.output_entry.get(), password)
-            add_history(self.username, os.path.basename(self.input_entry.get()), "Encrypted")
+            add_history(self.username, os.path.basename(self.input_entry.get()), os.path.basename(self.output_entry.get()), "Encrypted")
             error_message("Success!", "File encrypted")
             self.password_entry.delete(0, tk.END)
         except FileNotFoundError:
@@ -131,7 +131,7 @@ class Dash(ttk.Frame):
                 error_message("Password Error", "Password cannot be empty.")
                 return
             decrypt(self.input_entry.get(), self.output_entry.get(), password)
-            add_history(self.username, os.path.basename(self.input_entry.get()), "Decrypted")
+            add_history(self.username, os.path.basename(self.input_entry.get()), os.path.basename(self.output_entry.get()), "Decrypted")
             error_message("Success!", " File decrypted")
             self.password_entry.delete(0, tk.END)
         except FileNotFoundError:

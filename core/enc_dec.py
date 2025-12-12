@@ -64,10 +64,10 @@ def decrypt(filepath, outpath, password):
 
             fout.write(decryptor.finalize())
 
-def add_history(username, filename, action):
+def add_history(username, inputfile, outputfile, action):
     connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute("INSERT INTO history (username, filename, action) VALUES (?, ?, ?)", (username, filename, action))
+    cursor.execute("INSERT INTO history (username, inputfile, outputfile, action) VALUES (?, ?, ?, ?)", (username, inputfile, outputfile, action))
     connection.commit()
     connection.close()
 
@@ -75,7 +75,7 @@ def get_history(username):
     connection = get_connection()
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT filename, action, timestamp FROM history WHERE username = ? ORDER BY timestamp DESC",(username,))
+        "SELECT inputfile, outputfile, action, timestamp FROM history WHERE username = ? ORDER BY timestamp DESC",(username,))
     rows = cursor.fetchall()
     connection.close()
     return rows
