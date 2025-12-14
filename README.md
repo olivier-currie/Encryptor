@@ -1,5 +1,5 @@
 # Encryptor
-A Python GUI application for encrypting/decrypting files locally.
+A full-stack Python desktop application for encrypting/decrypting files locally.
 
 ## Features
 - Two-Step user authentification via e-mail
