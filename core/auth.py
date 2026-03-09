@@ -71,11 +71,13 @@ def create_user(username, email, password):
         connection.close()
 
 def send_email_verif(to_email, code):
-    API_URL = "https://encryptorbackend-production.up.railway.app/send_verification"
+    API_URL = "https://encryptorbackend-production.up.railway.app/send-verification"
     response = requests.post(API_URL, json={
         "to": to_email,
         "code": code
     })
+    print("Status code:", response.status_code)
+    print("Response:", response.text)
     if not response.ok:
         raise RuntimeError("Failed to send verification email")
 
