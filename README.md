@@ -32,7 +32,7 @@ Encryptor/
 git clone https://github.com/olivier-currie/Encryptor.git
 cd Encryptor
 pip install -r requirements.txt
-python main.py
+py main.py
 ```
 
 ## Credits
