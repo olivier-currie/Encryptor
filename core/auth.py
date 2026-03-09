@@ -5,6 +5,7 @@ import sqlite3
 import smtplib
 from email.message import EmailMessage
 import base64
+import requests
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
@@ -70,14 +71,13 @@ def create_user(username, email, password):
         connection.close()
 
 def send_email_verif(to_email, code):
-    message = EmailMessage()
-    message.set_content(f"Your verification code is: {code}")
-    message['Subject'] = "Confirm your account e-mail"
-    message['From'] = "encrypteur@gmail.com"
-    message['To'] = to_email
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-        smtp.login("encrypteur@gmail.com", "xwmb afmh sjlg vqnp")
-        smtp.send_message(message)
+    API_URL = "https://encryptorbackend-production.up.railway.app/send_verification"
+    response = requests.post(API_URL, json={
+        "to": to_email,
+        "code": code
+    })
+    if not response.ok:
+        raise RuntimeError("Failed to send verification email")
 
 def get_account_created(username):
     connection = get_connection()
