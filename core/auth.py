@@ -70,7 +70,7 @@ def create_user(username, email, password):
         connection.close()
 
 def send_email_verif(to_email, code):
-    API_URL = "https://encryptorbackend-production.up.railway.app/send-verification"
+    API_URL = "https://encryptorbackend.onrender.com/send-verification"
     response = requests.post(API_URL, json={
         "to": to_email,
         "code": code
