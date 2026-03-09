@@ -2,7 +2,6 @@
 import os
 from db.database import get_connection
 import sqlite3
-import smtplib
 from email.message import EmailMessage
 import base64
 import requests
